@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\PatientInformation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,16 +18,13 @@ class PatientInformationFactory extends Factory
      */
     public function definition()
     {
-        $user = User::factory()->create();
-        $user->assignRole('patient');
-
         return [
+            'user_id' => User::factory(),
             'weight' => $this->faker->numberBetween(20, 150),
             'height' => $this->faker->numberBetween(20, 150),
             'insurance_provider' => $this->faker->company,
             'current_medications' => $this->faker->sentence,
             'allergies' => $this->faker->sentence,
-            'user_id' => $user->id,
         ];
     }
 }
