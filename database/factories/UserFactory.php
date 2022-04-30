@@ -38,7 +38,7 @@ class UserFactory extends Factory
     {
         return $this->afterCreating(function (User $user) {
             $user->assignRole($this->faker->randomElement(['patient', 'doctor']));
-            if($user->hasRole('doctor')) {
+            if ($user->hasRole('doctor')) {
                 DoctorInformation::factory()->create([
                     'user_id' => $user->id,
                 ]);
