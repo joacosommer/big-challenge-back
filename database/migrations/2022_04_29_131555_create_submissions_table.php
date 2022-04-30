@@ -15,6 +15,13 @@ return new class extends Migration
     {
         Schema::create('submissions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('patient_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreignId('doctor_id')->nullable()->references('id')->on('users')->cascadeOnDelete();
+            $table->string('title');
+            $table->date('date_symptoms_start');
+            $table->text('description');
+            $table->string('file')->nullable();
+            $table->string('status');
             $table->timestamps();
         });
     }
