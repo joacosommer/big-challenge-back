@@ -25,7 +25,7 @@ class SubmissionFactory extends Factory
             'date_symptoms_start' => $this->faker->dateTimeBetween('-1 years', 'now'),
             'description' => $this->faker->text,
             'file' => null,
-            'status' => 'pending',
+            'status' => Submission::STATUS_PENDING,
         ];
     }
 
@@ -33,7 +33,7 @@ class SubmissionFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'status' => 'pending',
+                'status' => Submission::STATUS_PENDING,
             ];
         });
     }
@@ -42,7 +42,7 @@ class SubmissionFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'status' => 'in_progress',
+                'status' => Submission::STATUS_IN_PROGRESS,
             ];
         })->afterCreating(function (Submission $submission) {
             $submission->doctor_id = User::factory()->create()->syncRoles(['doctor'])->id;
@@ -54,7 +54,7 @@ class SubmissionFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'status' => 'done',
+                'status' => Submission::STATUS_DONE,
             ];
         })->afterCreating(function (Submission $submission) {
             $submission->doctor_id = User::factory()->create()->syncRoles(['doctor'])->id;

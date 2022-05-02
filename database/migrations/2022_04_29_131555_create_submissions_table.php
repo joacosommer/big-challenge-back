@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Submission;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,7 +21,7 @@ return new class extends Migration {
             $table->date('date_symptoms_start');
             $table->text('description');
             $table->string('file')->nullable();
-            $table->string('status');
+            $table->string('status')->default(Submission::STATUS_PENDING);
             $table->timestamps();
         });
     }
