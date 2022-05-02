@@ -15,12 +15,10 @@ class DoctorInformationFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
-        $user = User::factory()->create();
-        $user->assignRole('doctor');
         return [
-            'user_id' => $user->id,
+            'user_id' => User::factory(),
             'specialty' => $this->faker->word,
             'bank_account_number' => $this->faker->randomNumber(8),
         ];
