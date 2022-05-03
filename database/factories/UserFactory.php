@@ -7,6 +7,8 @@ use App\Models\PatientInformation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Spatie\Permission\Exceptions\RoleAlreadyExists;
+use Spatie\Permission\Models\Role;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -37,7 +39,13 @@ class UserFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (User $user) {
-            $user->assignRole($this->faker->randomElement(['patient', 'doctor']));
+            $role = $this->faker->randomElement(['patient', 'doctor']);
+            try {
+                Role::create(['name' => $role]);
+            } catch (RoleAlreadyExists $e) {
+                //
+            }
+            $user->assignRole($role);
             if ($user->hasRole('doctor')) {
                 DoctorInformation::factory()->create([
                     'user_id' => $user->id,

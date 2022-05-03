@@ -46,12 +46,12 @@ class User extends Authenticatable
 
     public function patientInformation(): HasOne
     {
-        return $this->hasOne(PatientInformation::class, 'user_id');
+        return $this->hasOne(PatientInformation::class);
     }
 
     public function doctorInformation(): HasOne
     {
-        return $this->hasOne(DoctorInformation::class, 'user_id');
+        return $this->hasOne(DoctorInformation::class);
     }
 
     public function doctorSubmission(): HasMany
