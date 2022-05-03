@@ -15,7 +15,7 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return response()->json('status', 200);
+            return response()->json(['status' => 204]);
         }
 
         return response()->json(['error' => 'Invalid credentials']);
