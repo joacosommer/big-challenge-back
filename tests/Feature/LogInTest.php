@@ -22,11 +22,50 @@ class LogInTest extends TestCase
         $user = User::factory()->create([
             'password' => Hash::make('password'),
         ]);
-        $response = $this->post('/api/login', [
+
+        $response = $this->postJson('/login', [
             'email' => $user->email,
             'password' => 'password',
         ]);
         $response->assertSuccessful();
-//        $response->assertJson(['user' => $user->id]);
+        $this->assertAuthenticatedAs($user);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     */
+    public function test_user_cannot_log_in_with_invalid_credentials()
+    {
+        $this->withDeprecationHandling();
+        $user = User::factory()->create([
+            'password' => Hash::make('password'),
+        ]);
+
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password11asdad',
+        ]);
+        $response->assertJson([
+            'error' => 'Invalid credentials',
+        ]);
+        $this->assertGuest();
+    }
+
+    public function test_user_cannot_log_in_with_invalid_email()
+    {
+        $this->withDeprecationHandling();
+        User::factory()->create([
+            'password' => Hash::make('password'),
+        ]);
+        $response = $this->post('/login', [
+            'email' => 'invalid-email@gmail.com',
+            'password' => 'password',
+        ]);
+        $response->assertJson([
+            'error' => 'Invalid credentials',
+        ]);
+        $this->assertGuest();
     }
 }
