@@ -2,8 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\DoctorInformation;
+use App\Models\PatientInformation;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Spatie\Permission\Exceptions\RoleAlreadyExists;
+use Spatie\Permission\Models\Role;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -17,12 +22,11 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        $gender = $this->faker->randomElement(['male', 'female']);
         return [
             'first_name' => $this->faker->name(),
             'last_name' => $this->faker->name(),
             'date_of_birth' => $this->faker->date(),
-            'gender' => $gender,
+            'gender' => $this->faker->randomElement(['male', 'female']),
             'phone_number' => $this->faker->phoneNumber(),
             'address' => $this->faker->address(),
             'email' => $this->faker->unique()->safeEmail(),
@@ -30,6 +34,28 @@ class UserFactory extends Factory
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (User $user) {
+            $role = $this->faker->randomElement(['patient', 'doctor']);
+            try {
+                Role::create(['name' => $role]);
+            } catch (RoleAlreadyExists $e) {
+                //
+            }
+            $user->assignRole($role);
+            if ($user->hasRole('doctor')) {
+                DoctorInformation::factory()->create([
+                    'user_id' => $user->id,
+                ]);
+            } else {
+                PatientInformation::factory()->create([
+                    'user_id' => $user->id,
+                ]);
+            }
+        });
     }
 
     /**

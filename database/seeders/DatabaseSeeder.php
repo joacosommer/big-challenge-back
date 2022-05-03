@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\DoctorInformation;
-use App\Models\PatientInformation;
+use App\Models\Submission;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,8 +15,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(RoleSeeder::class);
-        PatientInformation::factory(10)->create();
-        DoctorInformation::factory(10)->create();
+//        $this->call(RoleSeeder::class);
+        User::factory(10)->create();
+        Submission::factory(10)->pending()->create();
+        Submission::factory(10)->inProgress()->create();
+        Submission::factory(10)->done()->create();
     }
 }
