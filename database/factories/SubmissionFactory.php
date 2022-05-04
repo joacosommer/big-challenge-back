@@ -19,7 +19,7 @@ class SubmissionFactory extends Factory
     public function definition()
     {
         return [
-            'patient_id' => User::factory()->create()->syncRoles(['patient']),
+            'patient_id' => User::factory()->patient()->create(),
             'doctor_id' => null,
             'title' => $this->faker->sentence,
             'date_symptoms_start' => $this->faker->dateTimeBetween('-1 years', 'now'),
@@ -45,7 +45,7 @@ class SubmissionFactory extends Factory
                 'status' => Submission::STATUS_IN_PROGRESS,
             ];
         })->afterCreating(function (Submission $submission) {
-            $submission->doctor_id = User::factory()->create()->syncRoles(['doctor'])->id;
+            $submission->doctor_id = User::factory()->doctor()->create()->id;
             $submission->save();
         });
     }
@@ -57,7 +57,7 @@ class SubmissionFactory extends Factory
                 'status' => Submission::STATUS_DONE,
             ];
         })->afterCreating(function (Submission $submission) {
-            $submission->doctor_id = User::factory()->create()->syncRoles(['doctor'])->id;
+            $submission->doctor_id = User::factory()->doctor()->create()->id;
             $submission->file = $this->faker->url();
             $submission->save();
         });

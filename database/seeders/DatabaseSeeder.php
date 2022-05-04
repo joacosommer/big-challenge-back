@@ -15,8 +15,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-//        $this->call(RoleSeeder::class);
-        User::factory(10)->create();
+        User::factory(5)->patient()->create();
+        User::factory(2)->doctor()->create();
         Submission::factory(10)->pending()->create();
         Submission::factory(10)->inProgress()->create();
         Submission::factory(10)->done()->create();

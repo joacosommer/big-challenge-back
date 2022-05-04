@@ -10,6 +10,12 @@ class DoctorInformation extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'specialty',
+        'bank_account_number',
+        'user_id',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

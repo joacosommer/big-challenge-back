@@ -36,25 +36,33 @@ class UserFactory extends Factory
         ];
     }
 
-    public function configure()
+    public function doctor(): self
     {
         return $this->afterCreating(function (User $user) {
-            $role = $this->faker->randomElement(['patient', 'doctor']);
             try {
-                Role::create(['name' => $role]);
+                Role::create(['name' => 'doctor']);
             } catch (RoleAlreadyExists $e) {
                 //
             }
-            $user->assignRole($role);
-            if ($user->hasRole('doctor')) {
-                DoctorInformation::factory()->create([
-                    'user_id' => $user->id,
-                ]);
-            } else {
-                PatientInformation::factory()->create([
-                    'user_id' => $user->id,
-                ]);
+            $user->assignRole('doctor');
+            DoctorInformation::factory()->create([
+                'user_id' => $user->id,
+            ]);
+        });
+    }
+
+    public function patient(): self
+    {
+        return $this->afterCreating(function (User $user) {
+            try {
+                Role::create(['name' => 'patient']);
+            } catch (RoleAlreadyExists $e) {
+                //
             }
+            $user->assignRole('patient');
+            PatientInformation::factory()->create([
+                'user_id' => $user->id,
+            ]);
         });
     }
 
