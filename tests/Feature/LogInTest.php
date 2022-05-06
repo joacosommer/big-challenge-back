@@ -68,4 +68,24 @@ class LogInTest extends TestCase
         ]);
         $this->assertGuest();
     }
+
+    public function test_user_cannot_log_in_if_already_logged_in()
+    {
+        $this->withDeprecationHandling();
+        $user = User::factory()->create([
+            'password' => Hash::make('password'),
+        ]);
+        $this->actingAs($user);
+        $user2 = User::factory()->create([
+            'password' => Hash::make('password'),
+        ]);
+        $response = $this->post('/login', [
+            'email' => $user2->email,
+            'password' => 'password',
+        ]);
+        $response->assertJson([
+            'error' => 'You are already logged in',
+        ]);
+        $this->assertAuthenticatedAs($user);
+    }
 }

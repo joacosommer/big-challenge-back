@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RegisterPatientRequest;
 use App\Models\PatientInformation;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 
 class RegisterPatientController extends Controller
@@ -15,6 +16,8 @@ class RegisterPatientController extends Controller
         $user = User::create($this->getUserData($data));
         PatientInformation::create($this->getPatientData($data, $user));
         $user->assignRole('patient');
+
+        event(new Registered($user));
 
         return response()->json(['message' => 'Patient registered successfully'], 201);
     }
