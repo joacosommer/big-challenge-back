@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\DoctorInvitation;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Notifications\VerifyEmail;
@@ -21,17 +22,19 @@ class EmailVerificationTest extends TestCase
         $this->withDeprecationHandling();
         Notification::fake();
         Role::create(['name' => 'doctor']);
-        $this->post('api/registerDoctor', [
+        $invitation = DoctorInvitation::factory()->create();
+        $response = $this->post('api/registerDoctor', [
             'first_name' => 'John',
             'last_name' => 'Doe',
             'date_of_birth' => '1990-01-01',
             'gender' => 'male',
             'phone_number' => '23123123',
             'address' => 'Miami',
-            'email' => 'jhjhjh@gmail.com',
+            'email' => $invitation['email'],
             'password' => 'password',
             'specialty' => 'Paediatric',
             'bank_account_number' => '123123123',
+            'token' => $invitation['token'],
         ]);
         $user = User::first();
         Notification::assertSentTo($user, VerifyEmail::class);
@@ -92,17 +95,19 @@ class EmailVerificationTest extends TestCase
     {
         Event::fake();
         Role::create(['name' => 'doctor']);
-        $this->post('api/registerDoctor', [
+        $invitation = DoctorInvitation::factory()->create();
+        $response = $this->post('api/registerDoctor', [
             'first_name' => 'John',
             'last_name' => 'Doe',
             'date_of_birth' => '1990-01-01',
             'gender' => 'male',
             'phone_number' => '23123123',
             'address' => 'Miami',
-            'email' => 'doe@gmail.com',
+            'email' => $invitation['email'],
             'password' => 'password',
             'specialty' => 'Paediatric',
             'bank_account_number' => '123123123',
+            'token' => $invitation['token'],
         ]);
         Event::assertDispatched(Registered::class);
     }

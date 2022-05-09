@@ -13,7 +13,7 @@ class DoctorInvitationNotification extends Notification
     protected string $notification_url;
 
     protected string $token;
-    
+
     public function __construct(string $notification_url, string $token)
     {
         $this->notification_url = $notification_url;
