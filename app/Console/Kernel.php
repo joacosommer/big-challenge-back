@@ -2,8 +2,10 @@
 
 namespace App\Console;
 
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\DB;
 
 class Kernel extends ConsoleKernel
 {
@@ -15,7 +17,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        //no funciona
+        $schedule->call(function () {
+            DB::table('doctor_invitations')->where('created_at', '<=', Carbon::now()->subMinutes(2))->delete();
+        })->everyMinute();
     }
 
     /**
@@ -30,3 +35,13 @@ class Kernel extends ConsoleKernel
         require base_path('routes/console.php');
     }
 }
+
+//    class DeleteExpiredInvitations extends Command
+//    {
+//        protected $signature = 'invitations:delete';
+//
+//        public function handle()
+//        {
+//            DoctorInvitation::where('created_at', '<=', Carbon::now()->subMinutes(2))->delete();
+//        }
+//    }
