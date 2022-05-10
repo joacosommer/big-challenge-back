@@ -43,7 +43,7 @@ class DoctorInvitationTests extends TestCase
             'email' => 'doctor@gmail.com',
         ]);
         $response->assertSee([
-            'message' => 'User does not have the right roles.'
+            'message' => 'User does not have the right roles.',
         ]);
         $this->assertDatabaseMissing('doctor_invitations', [
             'email' => 'doctor@gmail.com',
