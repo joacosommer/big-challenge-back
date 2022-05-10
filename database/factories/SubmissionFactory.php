@@ -18,14 +18,16 @@ class SubmissionFactory extends Factory
      */
     public function definition()
     {
+        $status = $this->faker->randomElement([Submission::STATUS_PENDING, Submission::STATUS_DONE, Submission::STATUS_IN_PROGRESS]);
+
         return [
-            'patient_id' => User::factory()->create()->syncRoles(['patient']),
-            'doctor_id' => null,
+            'patient_id' => User::factory()->patient()->create(),
+            'doctor_id' => $status != Submission::STATUS_PENDING ? User::factory()->doctor()->create() : null,
             'title' => $this->faker->sentence,
             'date_symptoms_start' => $this->faker->dateTimeBetween('-1 years', 'now'),
             'description' => $this->faker->text,
-            'file' => null,
-            'status' => Submission::STATUS_PENDING,
+            'file' => $status === Submission::STATUS_DONE ? $this->faker->url() : null,
+            'status' => $status,
         ];
     }
 
@@ -45,7 +47,7 @@ class SubmissionFactory extends Factory
                 'status' => Submission::STATUS_IN_PROGRESS,
             ];
         })->afterCreating(function (Submission $submission) {
-            $submission->doctor_id = User::factory()->create()->syncRoles(['doctor'])->id;
+            $submission->doctor_id = User::factory()->doctor()->create()->id;
             $submission->save();
         });
     }
@@ -57,7 +59,7 @@ class SubmissionFactory extends Factory
                 'status' => Submission::STATUS_DONE,
             ];
         })->afterCreating(function (Submission $submission) {
-            $submission->doctor_id = User::factory()->create()->syncRoles(['doctor'])->id;
+            $submission->doctor_id = User::factory()->doctor()->create()->id;
             $submission->file = $this->faker->url();
             $submission->save();
         });

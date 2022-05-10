@@ -24,4 +24,11 @@ class LogOutTest extends TestCase
             ->assertSuccessful();
         $this->assertGuest();
     }
+
+    public function test_guest_log_out()
+    {
+        $this->assertGuest();
+        $this->post('logout');
+        $this->assertGuest();
+    }
 }
