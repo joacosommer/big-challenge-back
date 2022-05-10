@@ -21,7 +21,8 @@ class DoctorInvitationController extends Controller
             'email' => $email,
             'token' => $token,
         ]);
-        $url = env('APP_URL').':3000/register/doctor'; //url futura del frontend
+        // @todo: url futura del frontend
+        $url = env('APP_URL').':3000/register/doctor';
         Notification::route('mail', $email)->notify(new DoctorInvitationNotification($url, $token));
 
         return response()->json([
