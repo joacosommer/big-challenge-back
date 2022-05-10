@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterDoctorRequest;
 use App\Models\DoctorInformation;
+use App\Models\DoctorInvitation;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
@@ -13,10 +14,10 @@ class RegisterDoctorController extends Controller
     public function __invoke(RegisterDoctorRequest $request): JsonResponse
     {
         $data = $request->validated();
+        DoctorInvitation::where('token', $data['token'])->delete();
         $user = User::create($this->getUserData($data));
         DoctorInformation::create($this->getDoctorData($data, $user));
         $user->assignRole('doctor');
-
         event(new Registered($user));
 
         return response()->json(['message' => 'Doctor registered successfully'], 201);

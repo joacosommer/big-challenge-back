@@ -30,10 +30,22 @@ class RegisterDoctorRequest extends FormRequest
             'gender' => ['required', 'string'],
             'phone_number' => ['required'],
             'address' => ['required'],
-            'email' => ['required', 'email:strict', 'unique:users,email'],
+            'email' => ['required', 'email:strict', 'unique:users,email', 'exists:doctor_invitations,email,token,'.$this->token],
             'password' => ['required', 'string'],
             'specialty' => ['required', 'string'],
             'bank_account_number' => ['required', 'numeric'],
+            'token' => ['required', 'string', 'exists:doctor_invitations,token'],
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'token.exists' => 'The invitation token is invalid or has expired.',
         ];
     }
 }
