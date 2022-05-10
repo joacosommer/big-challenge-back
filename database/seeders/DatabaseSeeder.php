@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('admin'),
         ]);
         $admin->assignRole('admin');
+        $admin->save();
 
 //        $this->call(RoleSeeder::class);
         User::factory(5)->patient()->create();
