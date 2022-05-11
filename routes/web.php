@@ -19,5 +19,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/login', [LoginController::class, 'login']);
-Route::post('/logout', [LogoutController::class, 'logout']);
+Route::post('/login', [LoginController::class, 'login'])->middleware('guest');
+Route::post('/logout', [LogoutController::class, 'logout'])->middleware('auth');

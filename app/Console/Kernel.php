@@ -17,7 +17,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //no funciona
         $schedule->call(function () {
             DB::table('doctor_invitations')->where('created_at', '<=', Carbon::now()->subMinutes(2))->delete();
         })->everyMinute();
@@ -36,12 +35,3 @@ class Kernel extends ConsoleKernel
     }
 }
 
-//    class DeleteExpiredInvitations extends Command
-//    {
-//        protected $signature = 'invitations:delete';
-//
-//        public function handle()
-//        {
-//            DoctorInvitation::where('created_at', '<=', Carbon::now()->subMinutes(2))->delete();
-//        }
-//    }
