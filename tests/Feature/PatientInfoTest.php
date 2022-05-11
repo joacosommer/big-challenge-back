@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\PatientInformation;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class PatientInfoTest extends TestCase

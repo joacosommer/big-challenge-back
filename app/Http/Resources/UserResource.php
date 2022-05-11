@@ -26,5 +26,4 @@ class UserResource extends JsonResource
             'patient_info' => new PatientResource($this['patientInformation']),
         ];
     }
-
 }
