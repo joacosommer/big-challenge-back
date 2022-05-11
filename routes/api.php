@@ -32,6 +32,8 @@ Route::post('/doctor/invite', DoctorInvitationController::class)->middleware(['a
 
 Route::post('/registerDoctor', RegisterDoctorController::class)->middleware('guest');
 
+Route::get('/doctor/info', GetPatientInfoController::class)->middleware(['auth', 'role:doctor']);
+
 Route::post('/registerPatient', RegisterPatientController::class)->middleware('guest');
 
 Route::get('/patient/info', GetPatientInfoController::class)->middleware(['auth', 'role:patient']);

@@ -24,6 +24,7 @@ class UserResource extends JsonResource
             'address' => $this['address'],
             'email' => $this['email'],
             'patient_info' => new PatientResource($this['patientInformation']),
+            'doctor_info' => new DoctorResource($this['doctorInformation']),
         ];
     }
 }
