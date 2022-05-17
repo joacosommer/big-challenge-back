@@ -6,6 +6,7 @@ use App\Http\Controllers\GetPatientInfoController;
 use App\Http\Controllers\RegisterDoctorController;
 use App\Http\Controllers\RegisterPatientController;
 use App\Http\Controllers\ResendEmailVerificationController;
+use App\Http\Controllers\UpdateDoctorInformationController;
 use App\Http\Controllers\UpdatePatientInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,8 @@ Route::post('/doctor/invite', DoctorInvitationController::class)->middleware(['a
 Route::post('/registerDoctor', RegisterDoctorController::class)->middleware('guest');
 
 Route::get('/doctor/info', GetPatientInfoController::class)->middleware(['auth', 'role:doctor']);
+
+Route::put('/doctor/update', UpdateDoctorInformationController::class)->middleware(['auth', 'role:doctor']);
 
 Route::post('/registerPatient', RegisterPatientController::class)->middleware('guest');
 
