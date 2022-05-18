@@ -63,4 +63,18 @@ class GetSubmissionTest extends TestCase
         $response = $this->get('api/submission/'.$submission['id']);
         $response->assertStatus(302);
     }
+
+    /** @test */
+    public function test_a_doctor_cannot_get_submission_of_another_doctor()
+    {
+        $this->withDeprecationHandling();
+        $doctor = User::factory()->doctor()->create();
+        $anotherDoctor = User::factory()->doctor()->create();
+        $this->actingAs($doctor);
+        $submission = Submission::factory()->inProgress()->create([
+            'doctor_id' => $anotherDoctor['id'],
+        ]);
+        $response = $this->get('api/submission/'.$submission['id']);
+        $response->assertStatus(403);
+    }
 }

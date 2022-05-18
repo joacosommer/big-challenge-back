@@ -46,7 +46,7 @@ class UserFactory extends Factory
             }
             $user->assignRole('doctor');
             DoctorInformation::factory()->create([
-                'user_id' => $user->id,
+                'user_id' => $user['id'],
             ]);
         });
     }

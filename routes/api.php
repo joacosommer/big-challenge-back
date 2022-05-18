@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CreateSubmissionController;
+use App\Http\Controllers\DeleteSubmissionController;
 use App\Http\Controllers\DoctorInvitationController;
 use App\Http\Controllers\EmailVerificationHandlerController;
 use App\Http\Controllers\GetPatientInfoController;
@@ -52,3 +53,5 @@ Route::post('/submission/create', CreateSubmissionController::class)->middleware
 Route::get('/submission/{submission}', GetSubmissionController::class)->middleware(['auth']);
 
 Route::put('/submission/{submission}', UpdateSubmissionController::class)->middleware(['auth', 'role:patient']);
+
+Route::delete('/submission/{submission}', DeleteSubmissionController::class)->middleware(['auth', 'role:patient']);
