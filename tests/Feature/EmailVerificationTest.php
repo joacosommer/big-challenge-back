@@ -23,7 +23,7 @@ class EmailVerificationTest extends TestCase
         Notification::fake();
         Role::create(['name' => 'doctor']);
         $invitation = DoctorInvitation::factory()->create();
-        $response = $this->post('api/registerDoctor', [
+        $response = $this->post('api/doctor/register', [
             'first_name' => 'John',
             'last_name' => 'Doe',
             'date_of_birth' => '1990-01-01',
@@ -45,7 +45,7 @@ class EmailVerificationTest extends TestCase
         $this->withDeprecationHandling();
         Notification::fake();
         Role::create(['name' => 'patient']);
-        $this->post('api/registerPatient', [
+        $this->post('api/patient/register', [
             'first_name' => 'John',
             'last_name' => 'Doe',
             'date_of_birth' => '1990-01-01',
@@ -96,7 +96,7 @@ class EmailVerificationTest extends TestCase
         Event::fake();
         Role::create(['name' => 'doctor']);
         $invitation = DoctorInvitation::factory()->create();
-        $response = $this->post('api/registerDoctor', [
+        $response = $this->post('api/doctor/register', [
             'first_name' => 'John',
             'last_name' => 'Doe',
             'date_of_birth' => '1990-01-01',

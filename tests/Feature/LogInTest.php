@@ -83,9 +83,7 @@ class LogInTest extends TestCase
             'email' => $user2->email,
             'password' => 'password',
         ]);
-        $response->assertJson([
-            'error' => 'You are already logged in',
-        ]);
+        $response->assertStatus(302);
         $this->assertAuthenticatedAs($user);
     }
 }
