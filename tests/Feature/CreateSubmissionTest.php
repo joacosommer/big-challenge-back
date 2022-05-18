@@ -68,7 +68,7 @@ class CreateSubmissionTest extends TestCase
         ];
         $data[$formInput] = $formInputValue;
         $response = $this->put('api/submission/create', $data);
-        $response->assertStatus(405);
+        $response->assertStatus(302);
     }
 
     public function CreateSubmissionValidationProvider(): array

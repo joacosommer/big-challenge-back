@@ -10,6 +10,7 @@ use App\Http\Controllers\RegisterPatientController;
 use App\Http\Controllers\ResendEmailVerificationController;
 use App\Http\Controllers\UpdateDoctorInformationController;
 use App\Http\Controllers\UpdatePatientInformation;
+use App\Http\Controllers\UpdateSubmissionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -48,4 +49,6 @@ Route::put('/patient/update', UpdatePatientInformation::class)->middleware(['aut
 
 Route::post('/submission/create', CreateSubmissionController::class)->middleware(['auth', 'role:patient']);
 
-Route::get('/submission/{id}', GetSubmissionController::class)->middleware(['auth']);
+Route::get('/submission/{submission}', GetSubmissionController::class)->middleware(['auth']);
+
+Route::put('/submission/{submission}', UpdateSubmissionController::class)->middleware(['auth', 'role:patient']);

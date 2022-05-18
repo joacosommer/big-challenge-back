@@ -52,7 +52,7 @@ class GetSubmissionTest extends TestCase
         $anotherPatient = User::factory()->patient()->create();
         $this->actingAs($anotherPatient);
         $response = $this->get('api/submission/'.$submission['id']);
-        $response->assertStatus(500);
+        $response->assertStatus(403);
     }
 
     /** @test */
