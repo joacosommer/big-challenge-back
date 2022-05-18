@@ -10,6 +10,13 @@ class Submission extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'patient_id',
+        'title',
+        'description',
+        'date_symptoms_start',
+    ];
+
     public const STATUS_PENDING = 'pending';
 
     public const STATUS_DONE = 'done';

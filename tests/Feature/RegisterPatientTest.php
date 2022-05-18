@@ -20,7 +20,7 @@ class RegisterPatientTest extends TestCase
     public function test_a_patient_can_register()
     {
         Role::create(['name' => 'patient']);
-        $response = $this->post('api/registerPatient', [
+        $response = $this->post('api/patient/register', [
             'first_name' => 'John',
             'last_name' => 'Doe',
             'date_of_birth' => '1990-01-01',
@@ -43,7 +43,7 @@ class RegisterPatientTest extends TestCase
     public function test_a_doctor_can_not_register_if_already_registered()
     {
         $user = User::factory()->doctor()->create();
-        $response = $this->post('api/registerDoctor', [
+        $response = $this->post('api/patient/register', [
             'first_name' => 'John',
             'last_name' => 'Doe',
             'date_of_birth' => '1990-01-01',
@@ -80,7 +80,7 @@ class RegisterPatientTest extends TestCase
             'allergies' => null, ];
         $data[$formInput] = $formInputValue;
         Role::create(['name' => 'doctor']);
-        $response = $this->post('api/registerDoctor', $data);
+        $response = $this->post('api/patient/register', $data);
         $response->assertStatus(302);
         $this->assertCount(0, User::all());
     }
