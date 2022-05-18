@@ -1,11 +1,14 @@
 <?php
 
+use App\Http\Controllers\CreateSubmissionController;
 use App\Http\Controllers\DoctorInvitationController;
 use App\Http\Controllers\EmailVerificationHandlerController;
 use App\Http\Controllers\GetPatientInfoController;
 use App\Http\Controllers\RegisterDoctorController;
 use App\Http\Controllers\RegisterPatientController;
 use App\Http\Controllers\ResendEmailVerificationController;
+use App\Http\Controllers\UpdateDoctorInformationController;
+use App\Http\Controllers\UpdatePatientInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,8 +33,16 @@ Route::post('/email/verification-notification', ResendEmailVerificationControlle
 
 Route::post('/doctor/invite', DoctorInvitationController::class)->middleware(['auth', 'role:admin']);
 
-Route::post('/registerDoctor', RegisterDoctorController::class)->middleware('guest');
+Route::post('/doctor/register', RegisterDoctorController::class)->middleware('guest');
 
-Route::post('/registerPatient', RegisterPatientController::class)->middleware('guest');
+Route::get('/doctor/info', GetPatientInfoController::class)->middleware(['auth', 'role:doctor']);
+
+Route::put('/doctor/update', UpdateDoctorInformationController::class)->middleware(['auth', 'role:doctor']);
+
+Route::post('/patient/register', RegisterPatientController::class)->middleware('guest');
 
 Route::get('/patient/info', GetPatientInfoController::class)->middleware(['auth', 'role:patient']);
+
+Route::put('/patient/update', UpdatePatientInformation::class)->middleware(['auth', 'role:patient']);
+
+Route::post('/submission/create', CreateSubmissionController::class)->middleware(['auth', 'role:patient']);

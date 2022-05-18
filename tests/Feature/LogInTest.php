@@ -83,7 +83,7 @@ class LogInTest extends TestCase
             'email' => $user2->email,
             'password' => 'password',
         ]);
-        $response->status(401);
+        $response->assertStatus(302);
         $this->assertAuthenticatedAs($user);
     }
 }

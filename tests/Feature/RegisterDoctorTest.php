@@ -22,7 +22,7 @@ class RegisterDoctorTest extends TestCase
     {
         Role::create(['name' => 'doctor']);
         $invitation = DoctorInvitation::factory()->create();
-        $response = $this->post('api/registerDoctor', [
+        $response = $this->post('api/doctor/register', [
             'first_name' => 'John',
             'last_name' => 'Doe',
             'date_of_birth' => '1990-01-01',
@@ -46,7 +46,7 @@ class RegisterDoctorTest extends TestCase
         $user = User::factory()->doctor()->create([
             'email' => $invitation['email'],
         ]);
-        $response = $this->post('api/registerDoctor', [
+        $response = $this->post('api/doctor/register', [
             'first_name' => 'John',
             'last_name' => 'Doe',
             'date_of_birth' => '1990-01-01',
@@ -85,7 +85,7 @@ class RegisterDoctorTest extends TestCase
         ];
         $data[$formInput] = $formInputValue;
         Role::create(['name' => 'doctor']);
-        $response = $this->post('api/registerDoctor', $data);
+        $response = $this->post('api/doctor/register', $data);
         $response->assertStatus(302);
         $this->assertCount(0, User::all());
     }
