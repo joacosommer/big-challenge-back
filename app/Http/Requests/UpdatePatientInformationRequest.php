@@ -24,7 +24,6 @@ class UpdatePatientInformationRequest extends FormRequest
     public function rules()
     {
         return [
-
             'weight' => ['required', 'numeric'],
             'height' => ['required', 'numeric'],
             'insurance_provider' => ['required', 'string'],

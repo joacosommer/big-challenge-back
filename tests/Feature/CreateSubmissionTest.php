@@ -59,6 +59,7 @@ class CreateSubmissionTest extends TestCase
     public function test_a_patient_cannot_create_submission_with_invalid_data($formInput, $formInputValue)
     {
         $patient = User::factory()->patient()->create();
+        $this->actingAs($patient);
         $submission = Submission::factory()->create();
         $data = [
             'title' => 'Test submission',

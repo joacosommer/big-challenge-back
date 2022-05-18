@@ -18,16 +18,14 @@ class SubmissionFactory extends Factory
      */
     public function definition()
     {
-        $status = $this->faker->randomElement([Submission::STATUS_PENDING, Submission::STATUS_DONE, Submission::STATUS_IN_PROGRESS]);
-
         return [
             'patient_id' => User::factory()->patient()->create(),
-            'doctor_id' => $status != Submission::STATUS_PENDING ? User::factory()->doctor()->create() : null,
+            'doctor_id' => null,
             'title' => $this->faker->sentence,
             'date_symptoms_start' => $this->faker->dateTimeBetween('-1 years', 'now'),
             'description' => $this->faker->text,
-            'file' => $status === Submission::STATUS_DONE ? $this->faker->url() : null,
-            'status' => $status,
+            'file' => null,
+            'status' => Submission::STATUS_PENDING,
         ];
     }
 

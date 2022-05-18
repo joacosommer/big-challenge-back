@@ -4,6 +4,7 @@ use App\Http\Controllers\CreateSubmissionController;
 use App\Http\Controllers\DoctorInvitationController;
 use App\Http\Controllers\EmailVerificationHandlerController;
 use App\Http\Controllers\GetPatientInfoController;
+use App\Http\Controllers\GetSubmissionController;
 use App\Http\Controllers\RegisterDoctorController;
 use App\Http\Controllers\RegisterPatientController;
 use App\Http\Controllers\ResendEmailVerificationController;
@@ -46,3 +47,5 @@ Route::get('/patient/info', GetPatientInfoController::class)->middleware(['auth'
 Route::put('/patient/update', UpdatePatientInformation::class)->middleware(['auth', 'role:patient']);
 
 Route::post('/submission/create', CreateSubmissionController::class)->middleware(['auth', 'role:patient']);
+
+Route::get('/submission/{id}', GetSubmissionController::class)->middleware(['auth']);
