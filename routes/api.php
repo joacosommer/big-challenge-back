@@ -41,7 +41,7 @@ Route::post('/doctor/register', RegisterDoctorController::class)->middleware('gu
 
 Route::get('/doctor/info', GetPatientInfoController::class)->middleware(['auth', 'role:doctor']);
 
-Route::put('/doctor/update', UpdateDoctorInformationController::class)->middleware(['auth', 'role:doctor']);
+Route::post('/doctor/update', UpdateDoctorInformationController::class)->middleware(['auth', 'role:doctor']);
 
 Route::put('/doctor/take/{submission}', DoctorTakeSubmissionController::class)->middleware(['auth', 'role:doctor']);
 
@@ -49,7 +49,7 @@ Route::post('/patient/register', RegisterPatientController::class)->middleware('
 
 Route::get('/patient/info', GetPatientInfoController::class)->middleware(['auth', 'role:patient']);
 
-Route::put('/patient/update', UpdatePatientInformation::class)->middleware(['auth', 'role:patient']);
+Route::post('/patient/update', UpdatePatientInformation::class)->middleware(['auth', 'role:patient']);
 
 Route::post('/submission/create', CreateSubmissionController::class)->middleware(['auth', 'role:patient']);
 

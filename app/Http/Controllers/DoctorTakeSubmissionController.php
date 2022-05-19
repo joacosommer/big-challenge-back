@@ -7,7 +7,7 @@ use App\Http\Resources\SubmissionResource;
 use App\Models\Submission;
 use Illuminate\Support\Facades\Auth;
 
-class DoctorTakeSubmissionController extends Controller
+class DoctorTakeSubmissionController
 {
     public function __invoke(DoctorTakeSubmissionRequest $request, Submission $submission): SubmissionResource
     {
