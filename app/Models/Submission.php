@@ -12,9 +12,12 @@ class Submission extends Model
 
     protected $fillable = [
         'patient_id',
+        'doctor_id',
         'title',
         'description',
         'date_symptoms_start',
+        'status',
+        'file',
     ];
 
     public const STATUS_PENDING = 'pending';
