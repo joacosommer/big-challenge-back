@@ -3,18 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdatePatientInformationRequest;
-use App\Http\Resources\PatientResource;
-use App\Models\PatientInformation;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 
 class UpdatePatientInformation extends Controller
 {
-    public function __invoke(UpdatePatientInformationRequest $request): PatientResource
+    public function __invoke(UpdatePatientInformationRequest $request): UserResource
     {
-        $patient = PatientInformation::where('user_id', Auth::user()['id'])->first();
-        $patient->update($request->all());
+        Auth::user()->patientInformation()->update($request->validated());
 
-        return (new PatientResource($patient))->additional(['meta' => [
+        return (new UserResource(Auth::user()))->additional(['meta' => [
             'message' => 'Successfully update patient information.',
             'status' => 200,
         ]]);

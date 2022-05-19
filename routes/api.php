@@ -1,14 +1,18 @@
 <?php
 
 use App\Http\Controllers\CreateSubmissionController;
+use App\Http\Controllers\DeleteSubmissionController;
 use App\Http\Controllers\DoctorInvitationController;
+use App\Http\Controllers\DoctorTakeSubmissionController;
 use App\Http\Controllers\EmailVerificationHandlerController;
 use App\Http\Controllers\GetPatientInfoController;
+use App\Http\Controllers\GetSubmissionController;
 use App\Http\Controllers\RegisterDoctorController;
 use App\Http\Controllers\RegisterPatientController;
 use App\Http\Controllers\ResendEmailVerificationController;
 use App\Http\Controllers\UpdateDoctorInformationController;
 use App\Http\Controllers\UpdatePatientInformation;
+use App\Http\Controllers\UpdateSubmissionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,12 +41,20 @@ Route::post('/doctor/register', RegisterDoctorController::class)->middleware('gu
 
 Route::get('/doctor/info', GetPatientInfoController::class)->middleware(['auth', 'role:doctor']);
 
-Route::put('/doctor/update', UpdateDoctorInformationController::class)->middleware(['auth', 'role:doctor']);
+Route::post('/doctor/update', UpdateDoctorInformationController::class)->middleware(['auth', 'role:doctor']);
+
+Route::put('/doctor/take/{submission}', DoctorTakeSubmissionController::class)->middleware(['auth', 'role:doctor']);
 
 Route::post('/patient/register', RegisterPatientController::class)->middleware('guest');
 
 Route::get('/patient/info', GetPatientInfoController::class)->middleware(['auth', 'role:patient']);
 
-Route::put('/patient/update', UpdatePatientInformation::class)->middleware(['auth', 'role:patient']);
+Route::post('/patient/update', UpdatePatientInformation::class)->middleware(['auth', 'role:patient']);
 
 Route::post('/submission/create', CreateSubmissionController::class)->middleware(['auth', 'role:patient']);
+
+Route::get('/submission/{submission}', GetSubmissionController::class)->middleware(['auth']);
+
+Route::put('/submission/{submission}', UpdateSubmissionController::class)->middleware(['auth', 'role:patient']);
+
+Route::delete('/submission/{submission}', DeleteSubmissionController::class)->middleware(['auth', 'role:patient']);

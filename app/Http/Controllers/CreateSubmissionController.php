@@ -19,7 +19,6 @@ class CreateSubmissionController extends Controller
             'description' => $data['description'],
             'status' => Submission::STATUS_PENDING,
         ]);
-        $submission->save();
 
         return response()->json([
             'message' => 'Submission created successfully',

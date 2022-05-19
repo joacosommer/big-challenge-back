@@ -33,8 +33,8 @@ class CreateSubmissionTest extends TestCase
             'title' => 'Test submission',
             'description' => 'Test submission description',
             'date_symptoms_start' => '2020-01-01',
-        ]);
-        $response->assertStatus(302);
+        ], ['Accept' => 'application/json']);
+        $response->assertUnauthorized();
         $this->assertCount(0, Submission::all());
     }
 
@@ -59,6 +59,7 @@ class CreateSubmissionTest extends TestCase
     public function test_a_patient_cannot_create_submission_with_invalid_data($formInput, $formInputValue)
     {
         $patient = User::factory()->patient()->create();
+        $this->actingAs($patient);
         $submission = Submission::factory()->create();
         $data = [
             'title' => 'Test submission',
@@ -66,8 +67,8 @@ class CreateSubmissionTest extends TestCase
             'date_symptoms_start' => '2020-01-01',
         ];
         $data[$formInput] = $formInputValue;
-        $response = $this->put('api/submission/create', $data);
-        $response->assertStatus(405);
+        $response = $this->postJson('api/submission/create', $data);
+        $response->assertStatus(422);
     }
 
     public function CreateSubmissionValidationProvider(): array
