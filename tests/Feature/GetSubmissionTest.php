@@ -52,7 +52,7 @@ class GetSubmissionTest extends TestCase
         $anotherPatient = User::factory()->patient()->create();
         $this->actingAs($anotherPatient);
         $response = $this->get('api/submission/'.$submission['id']);
-        $response->assertStatus(500);
+        $response->assertStatus(403);
     }
 
     /** @test */
@@ -62,5 +62,19 @@ class GetSubmissionTest extends TestCase
         $submission = Submission::factory()->pending()->create();
         $response = $this->get('api/submission/'.$submission['id']);
         $response->assertStatus(302);
+    }
+
+    /** @test */
+    public function test_a_doctor_cannot_get_submission_of_another_doctor()
+    {
+        $this->withDeprecationHandling();
+        $doctor = User::factory()->doctor()->create();
+        $anotherDoctor = User::factory()->doctor()->create();
+        $this->actingAs($doctor);
+        $submission = Submission::factory()->inProgress()->create([
+            'doctor_id' => $anotherDoctor['id'],
+        ]);
+        $response = $this->get('api/submission/'.$submission['id']);
+        $response->assertStatus(403);
     }
 }
