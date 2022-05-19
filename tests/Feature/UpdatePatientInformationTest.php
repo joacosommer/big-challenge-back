@@ -15,7 +15,7 @@ class UpdatePatientInformationTest extends TestCase
     {
         $patient = User::factory()->patient()->create();
         $this->actingAs($patient);
-        $response = $this->put('api/patient/update', [
+        $response = $this->postJson('api/patient/update', [
             'weight' => '100',
             'height' => '100',
             'insurance_provider' => 'Aetna',
@@ -37,14 +37,14 @@ class UpdatePatientInformationTest extends TestCase
     public function test_patient_cannot_update_if_not_logged_in()
     {
         $patient = User::factory()->patient()->create();
-        $response = $this->put('api/patient/update', [
+        $response = $this->postJson('api/patient/update', [
             'weight' => '100',
             'height' => '100',
             'insurance_provider' => 'Aetna',
             'current_medications' => 'Aspirin',
             'allergies' => 'Penicillin',
         ]);
-        $response->assertStatus(302);
+        $response->assertStatus(401);
     }
 
     /** @test */
@@ -52,7 +52,7 @@ class UpdatePatientInformationTest extends TestCase
     {
         $user = User::factory()->create();
         $this->actingAs($user);
-        $response = $this->put('api/patient/update', [
+        $response = $this->postJson('api/patient/update', [
             'weight' => '100',
             'height' => '100',
             'insurance_provider' => 'Aetna',
@@ -77,8 +77,8 @@ class UpdatePatientInformationTest extends TestCase
             'allergies' => $patient->allergies,
         ];
         $data[$formInput] = $formInputValue;
-        $response = $this->put('api/patient/update', $data);
-        $response->assertStatus(302);
+        $response = $this->postJson('api/patient/update', $data);
+        $response->assertStatus(401);
     }
 
     public function updatePatientValidationProvider(): array

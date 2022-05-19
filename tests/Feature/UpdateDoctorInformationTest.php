@@ -15,7 +15,7 @@ class UpdateDoctorInformationTest extends TestCase
     {
         $doctor = User::factory()->doctor()->create();
         $this->actingAs($doctor);
-        $response = $this->put('api/doctor/update', [
+        $response = $this->postJson('api/doctor/update', [
             'specialty' => 'Cardiologist',
             'bank_account_number' => '123456789',
         ]);
@@ -31,11 +31,11 @@ class UpdateDoctorInformationTest extends TestCase
     public function test_doctor_cannot_update_if_not_logged_in()
     {
         $doctor = User::factory()->doctor()->create();
-        $response = $this->put('api/doctor/update', [
+        $response = $this->postJson('api/doctor/update', [
             'specialty' => 'Cardiologist',
             'bank_account_number' => '123456789',
         ]);
-        $response->assertStatus(302);
+        $response->assertStatus(401);
     }
 
     /** @test */
@@ -43,7 +43,7 @@ class UpdateDoctorInformationTest extends TestCase
     {
         $user = User::factory()->create();
         $this->actingAs($user);
-        $response = $this->put('api/doctor/update', [
+        $response = $this->postJson('api/doctor/update', [
             'specialty' => 'Cardiologist',
             'bank_account_number' => '123456789',
         ]);
@@ -55,12 +55,11 @@ class UpdateDoctorInformationTest extends TestCase
     {
         $doctor = User::factory()->doctor()->create();
         $this->actingAs($doctor);
-        $response = $this->put('api/doctor/update', [
+        $response = $this->postJson('api/doctor/update', [
             'specialty' => '',
             'bank_account_number' => '123456789',
         ]);
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors('specialty');
+        $response->assertStatus(422);
     }
 
     /** @test */
@@ -68,11 +67,10 @@ class UpdateDoctorInformationTest extends TestCase
     {
         $doctor = User::factory()->doctor()->create();
         $this->actingAs($doctor);
-        $response = $this->put('api/doctor/update', [
+        $response = $this->postJson('api/doctor/update', [
             'specialty' => 'Cardiologist',
             'bank_account_number' => '',
         ]);
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors('bank_account_number');
+        $response->assertStatus(422);
     }
 }

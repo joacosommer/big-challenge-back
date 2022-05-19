@@ -17,7 +17,7 @@ class DoctorTakeSubmissionRequest extends FormRequest
         /** @mixin Submission */
         $submission = $this->route('submission');
 
-        return $this->SubmissionIsPending($submission);
+        return $this->submissionIsPending($submission);
     }
 
     /**
@@ -32,7 +32,7 @@ class DoctorTakeSubmissionRequest extends FormRequest
         ];
     }
 
-    private function SubmissionIsPending(Submission $submission): bool
+    private function submissionIsPending(Submission $submission): bool
     {
         return $submission['status'] == Submission::STATUS_PENDING;
     }
