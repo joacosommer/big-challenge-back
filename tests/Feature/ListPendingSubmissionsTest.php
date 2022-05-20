@@ -19,7 +19,7 @@ class ListPendingSubmissionsTest extends TestCase
         Submission::factory(15)->pending()->create();
         $this->assertCount(15, Submission::all());
         $this->actingAs($doctor);
-        $response = $this->get('api/submission/list/pending');
+        $response = $this->getJson('api/submission/list/pending');
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'data' => [
@@ -57,9 +57,8 @@ class ListPendingSubmissionsTest extends TestCase
     /** @test */
     public function test_guest_can_not_get_json_list_of_pending_submissions()
     {
-        $response = $this->get('api/submission/list/pending');
-        $response->assertStatus(302);
-        $response->assertSee('Unauthorized');
+        $response = $this->getJson('api/submission/list/pending');
+        $response->assertUnauthorized();
     }
 
     /** @test */
@@ -67,8 +66,8 @@ class ListPendingSubmissionsTest extends TestCase
     {
         $patient = User::factory()->patient()->create();
         $this->actingAs($patient);
-        $response = $this->get('api/submission/list/pending');
-        $response->assertStatus(403);
+        $response = $this->getJson('api/submission/list/pending');
+        $response->assertForbidden();
         $response->assertSee([
             'message' => 'User does not have the right roles.',
         ]);
@@ -83,7 +82,7 @@ class ListPendingSubmissionsTest extends TestCase
         Submission::factory(7)->inProgress()->create();
         $this->assertCount(14, Submission::all());
         $this->actingAs($doctor);
-        $response = $this->get('api/submission/list/pending');
+        $response = $this->getJson('api/submission/list/pending');
         $response->assertStatus(200);
         $response->assertJsonCount(7, 'data');
     }

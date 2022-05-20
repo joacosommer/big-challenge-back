@@ -8,6 +8,7 @@ use App\Http\Controllers\EmailVerificationHandlerController;
 use App\Http\Controllers\GetPatientInfoController;
 use App\Http\Controllers\GetSubmissionController;
 use App\Http\Controllers\ListPendingSubmissionController;
+use App\Http\Controllers\ListSubmissionController;
 use App\Http\Controllers\RegisterDoctorController;
 use App\Http\Controllers\RegisterPatientController;
 use App\Http\Controllers\ResendEmailVerificationController;
@@ -61,3 +62,6 @@ Route::put('/submission/{submission}', UpdateSubmissionController::class)->middl
 Route::delete('/submission/{submission}', DeleteSubmissionController::class)->middleware(['auth', 'role:patient']);
 
 Route::get('/submission/list/pending', ListPendingSubmissionController::class)->middleware(['auth', 'role:doctor']);
+
+Route::get('/submission/list/all', ListSubmissionController::class)->middleware(['auth']);
+
