@@ -64,4 +64,3 @@ Route::delete('/submission/{submission}', DeleteSubmissionController::class)->mi
 Route::get('/submission/list/pending', ListPendingSubmissionController::class)->middleware(['auth', 'role:doctor']);
 
 Route::get('/submission/list/all', ListSubmissionController::class)->middleware(['auth']);
-

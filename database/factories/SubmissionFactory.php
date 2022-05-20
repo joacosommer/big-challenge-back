@@ -43,10 +43,8 @@ class SubmissionFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'status' => Submission::STATUS_IN_PROGRESS,
+                'doctor_id' => User::factory()->doctor()->create(),
             ];
-        })->afterCreating(function (Submission $submission) {
-            $submission->doctor_id = User::factory()->doctor()->create()->id;
-            $submission->save();
         });
     }
 
@@ -55,11 +53,9 @@ class SubmissionFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'status' => Submission::STATUS_DONE,
+                'doctor_id' => User::factory()->doctor()->create(),
+                'file' => $this->faker->imageUrl(),
             ];
-        })->afterCreating(function (Submission $submission) {
-            $submission->doctor_id = User::factory()->doctor()->create()->id;
-            $submission->file = $this->faker->url();
-            $submission->save();
         });
     }
 }
