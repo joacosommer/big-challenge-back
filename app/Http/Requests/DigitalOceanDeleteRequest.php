@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Submission;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class DigitalOceanDeleteRequest extends FormRequest
 {
@@ -11,9 +13,12 @@ class DigitalOceanDeleteRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return false;
+        /** @var Submission $submission */
+        $submission = $this->route('submission');
+
+        return $this->submissionIsFromDoctor($submission) && $this->submissionIsDone($submission);
     }
 
     /**
@@ -26,5 +31,15 @@ class DigitalOceanDeleteRequest extends FormRequest
         return [
             //
         ];
+    }
+
+    public function submissionIsFromDoctor(Submission $submission): bool
+    {
+        return $submission['doctor_id'] == Auth::user()->id;
+    }
+
+    public function submissionIsDone(Submission $submission): bool
+    {
+        return $submission['status'] == Submission::STATUS_DONE;
     }
 }

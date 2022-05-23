@@ -9,7 +9,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
-class PrescriptionFileUploadTest extends TestCase
+class PrescriptionFileStoreTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -20,11 +20,11 @@ class PrescriptionFileUploadTest extends TestCase
         $submission = Submission::factory()->inProgress()->create();
         $this->actingAs($submission->doctor);
         Storage::fake();
-        $response = $this->postJson('api/doctor/prescription/' . $submission->id, [
+        $response = $this->postJson('api/doctor/prescription/'.$submission->id, [
             'file' => UploadedFile::fake()->create('prescription.txt'),
         ]);
         $response->assertStatus(200);
-        Storage::assertExists('joaquinsommer/' . $response->json('file'));
+        Storage::assertExists('joaquinsommer/'.$response->json('data')['file']);
     }
 
     /** @test */
@@ -32,11 +32,10 @@ class PrescriptionFileUploadTest extends TestCase
     {
         $submission = Submission::factory()->inProgress()->create();
         Storage::fake();
-        $response = $this->postJson('api/doctor/prescription/' . $submission->id, [
+        $response = $this->postJson('api/doctor/prescription/'.$submission->id, [
             'file' => UploadedFile::fake()->create('prescription.txt'),
         ]);
         $response->assertUnauthorized();
-        Storage::assertMissing('joaquinsommer/' . $response->json('file'));
     }
 
     /** @test */
@@ -45,11 +44,10 @@ class PrescriptionFileUploadTest extends TestCase
         $submission = Submission::factory()->done()->create();
         $this->actingAs($submission->doctor);
         Storage::fake();
-        $response = $this->postJson('api/doctor/prescription/' . $submission->id, [
+        $response = $this->postJson('api/doctor/prescription/'.$submission->id, [
             'file' => UploadedFile::fake()->create('prescription.txt'),
         ]);
         $response->assertForbidden();
-        Storage::assertMissing('joaquinsommer/' . $response->json('file'));
     }
 
     /** @test */
@@ -59,11 +57,10 @@ class PrescriptionFileUploadTest extends TestCase
         $doctor = User::factory()->doctor()->create();
         $this->actingAs($doctor);
         Storage::fake();
-        $response = $this->postJson('api/doctor/prescription/' . $submission->id, [
+        $response = $this->postJson('api/doctor/prescription/'.$submission->id, [
             'file' => UploadedFile::fake()->create('prescription.txt'),
         ]);
         $response->assertForbidden();
-        Storage::assertMissing('joaquinsommer/' . $response->json('file'));
     }
 
     /** @test */
@@ -71,11 +68,10 @@ class PrescriptionFileUploadTest extends TestCase
     {
         $this->actingAs(User::factory()->doctor()->create());
         Storage::fake();
-        $response = $this->postJson('api/doctor/prescription/' . 999, [
+        $response = $this->postJson('api/doctor/prescription/'. 999, [
             'file' => UploadedFile::fake()->create('prescription.txt'),
         ]);
         $response->assertNotFound();
-        Storage::assertMissing('joaquinsommer/' . $response->json('file'));
     }
 
     /** @test */
@@ -84,11 +80,10 @@ class PrescriptionFileUploadTest extends TestCase
         $submission = Submission::factory()->inProgress()->create();
         $this->actingAs($submission->patient);
         Storage::fake();
-        $response = $this->postJson('api/doctor/prescription/' . $submission->id, [
+        $response = $this->postJson('api/doctor/prescription/'.$submission->id, [
             'file' => UploadedFile::fake()->create('prescription.txt'),
         ]);
         $response->assertForbidden();
-        Storage::assertMissing('joaquinsommer/' . $response->json('file'));
     }
 
     /** @test */
@@ -97,11 +92,10 @@ class PrescriptionFileUploadTest extends TestCase
         $submission = Submission::factory()->inProgress()->create();
         $this->actingAs($submission->doctor);
         Storage::fake();
-        $response = $this->postJson('api/doctor/prescription/' . $submission->id, [
+        $response = $this->postJson('api/doctor/prescription/'.$submission->id, [
             'file' => 'not a file',
         ]);
         $response->assertUnprocessable();
-        Storage::assertMissing('joaquinsommer/' . $response->json('file'));
     }
 
     /** @test */
@@ -110,10 +104,9 @@ class PrescriptionFileUploadTest extends TestCase
         $submission = Submission::factory()->inProgress()->create();
         $this->actingAs($submission->doctor);
         Storage::fake();
-        $response = $this->postJson('api/doctor/prescription/' . $submission->id, [
+        $response = $this->postJson('api/doctor/prescription/'.$submission->id, [
             'file' => UploadedFile::fake()->create('prescription.pdf'),
         ]);
         $response->assertUnprocessable();
-        Storage::assertMissing('joaquinsommer/' . $response->json('file'));
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Submission;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class DigitalOceanStoreRequest extends FormRequest
 {
@@ -13,7 +15,10 @@ class DigitalOceanStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        /** @var Submission $submission */
+        $submission = $this->route('submission');
+
+        return $this->submissionIsFromDoctor($submission) && $this->submissionIsInProgress($submission);
     }
 
     /**
@@ -24,7 +29,17 @@ class DigitalOceanStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'file' => ['required', 'file', 'mimes:txt'],
         ];
+    }
+
+    public function submissionIsFromDoctor(Submission $submission): bool
+    {
+        return $submission['doctor_id'] == Auth::user()->id;
+    }
+
+    public function submissionIsInProgress(Submission $submission): bool
+    {
+        return $submission['status'] == Submission::STATUS_IN_PROGRESS;
     }
 }

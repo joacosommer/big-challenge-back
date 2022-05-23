@@ -27,10 +27,8 @@ class DoctorTakeSubmissionTest extends TestCase
                 'doctor_id' => $doctor['id'],
                 'status' => Submission::STATUS_IN_PROGRESS,
             ],
-            'meta' => [
-                'message' => 'Successfully take submission.',
-                'status' => 200,
-            ],
+            'message' => 'Successfully take submission.',
+            'status' => 200,
         ]);
     }
 

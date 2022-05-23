@@ -5,7 +5,7 @@ namespace App\Services;
 /**
  * Class CdnService.
  */
-class CdnService
+interface CdnService
 {
-
+    public function purge($fileName);
 }
