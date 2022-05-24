@@ -16,9 +16,9 @@ class DoctorTakeSubmissionController
             'status' => Submission::STATUS_IN_PROGRESS,
         ]);
 
-        return (new SubmissionResource($submission))->additional(['meta' => [
+        return (new SubmissionResource($submission))->additional([
             'message' => 'Successfully take submission.',
             'status' => 200,
-        ]]);
+        ]);
     }
 }
