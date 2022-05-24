@@ -6,6 +6,7 @@ use App\Events\UploadPrescription;
 use App\Notifications\PrescriptionUploadNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
 
 class SendDoctorPrescriptionNotification implements ShouldQueue
 {
@@ -27,8 +28,12 @@ class SendDoctorPrescriptionNotification implements ShouldQueue
      */
     public function handle(UploadPrescription $event)
     {
-        // @todo: url futura del frontend
-        $url = env('APP_URL').':3000/login';
+        $fileName = $event->submission['file'];
+        $folder = config('filesystems.disks.do.folder');
+        $url = Storage::temporaryUrl(
+            "{$folder}/{$fileName}",
+            now()->addWeek()
+        );
         Notification::route('mail', $event->submission->patient->email)->notify(new PrescriptionUploadNotification($url, $event->submission));
     }
 }
