@@ -50,8 +50,8 @@ class PrescriptionUploadNotification extends Notification
             ->priority(1)
             ->greeting('Greetings Patient!')
             ->line('This is to notify you that your prescription has been uploaded by Dr.'.$this->submission->doctor->last_name)
-            ->line('Access the link below to view the prescription')
-            ->action('Get prescription', $this->notification_url)
+            ->line('Download the prescription from the link below:')
+            ->action('Download prescription', $this->notification_url)
             ->line('Thank you for using our application!')
             ->salutation('Regards, Healthcare App');
     }

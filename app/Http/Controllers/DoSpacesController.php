@@ -6,9 +6,11 @@ use App\Events\UploadPrescription;
 use App\Http\Requests\DigitalOceanDeleteRequest;
 use App\Http\Requests\DigitalOceanStoreRequest;
 use App\Http\Requests\DigitalOceanUpdateRequest;
+use App\Http\Requests\GetPrescriptionFileRequest;
 use App\Http\Resources\SubmissionResource;
 use App\Models\Submission;
 use App\Services\CdnService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -82,5 +84,21 @@ class DoSpacesController extends Controller
             'message' => 'Prescription file updated',
             'status' => 200,
         ]]);
+    }
+
+    public function get(GetPrescriptionFileRequest $request, Submission $submission): JsonResponse
+    {
+        $fileName = $submission['file'];
+        $folder = config('filesystems.disks.do.folder');
+
+        $url = Storage::temporaryUrl(
+            "{$folder}/{$fileName}",
+            now()->addWeek()
+        );
+
+        return response()->json([
+            'status' => 200,
+            'url' => $url,
+        ]);
     }
 }
