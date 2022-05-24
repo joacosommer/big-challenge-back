@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UploadPrescription;
 use App\Http\Requests\DigitalOceanDeleteRequest;
 use App\Http\Requests\DigitalOceanStoreRequest;
 use App\Http\Requests\DigitalOceanUpdateRequest;
@@ -35,6 +36,8 @@ class DoSpacesController extends Controller
             'file' => $fileName,
             'status' => Submission::STATUS_DONE,
         ]);
+
+        event(new UploadPrescription($submission));
 
         return (new SubmissionResource($submission))->additional(['meta' => [
             'message' => 'Prescription file uploaded',
@@ -72,6 +75,8 @@ class DoSpacesController extends Controller
             file_get_contents($file)
         );
         $this->cdnService->purge($fileName);
+
+        event(new UploadPrescription($submission));
 
         return (new SubmissionResource($submission))->additional(['meta' => [
             'message' => 'Prescription file updated',
