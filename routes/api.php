@@ -4,10 +4,12 @@ use App\Http\Controllers\CreateSubmissionController;
 use App\Http\Controllers\DeleteSubmissionController;
 use App\Http\Controllers\DoctorInvitationController;
 use App\Http\Controllers\DoctorTakeSubmissionController;
+use App\Http\Controllers\DoSpacesController;
 use App\Http\Controllers\EmailVerificationHandlerController;
 use App\Http\Controllers\GetPatientInfoController;
 use App\Http\Controllers\GetSubmissionController;
 use App\Http\Controllers\ListPendingSubmissionController;
+use App\Http\Controllers\ListSubmissionController;
 use App\Http\Controllers\RegisterDoctorController;
 use App\Http\Controllers\RegisterPatientController;
 use App\Http\Controllers\ResendEmailVerificationController;
@@ -46,6 +48,12 @@ Route::post('/doctor/update', UpdateDoctorInformationController::class)->middlew
 
 Route::put('/doctor/take/{submission}', DoctorTakeSubmissionController::class)->middleware(['auth', 'role:doctor']);
 
+Route::post('/doctor/prescription/{submission}', [DoSpacesController::class, 'store'])->middleware(['auth', 'role:doctor']);
+
+Route::delete('/doctor/prescription/{submission}', [DoSpacesController::class, 'delete'])->middleware(['auth', 'role:doctor']);
+
+Route::put('/doctor/prescription/{submission}', [DoSpacesController::class, 'update'])->middleware(['auth', 'role:doctor']);
+
 Route::post('/patient/register', RegisterPatientController::class)->middleware('guest');
 
 Route::get('/patient/info', GetPatientInfoController::class)->middleware(['auth', 'role:patient']);
@@ -61,3 +69,7 @@ Route::put('/submission/{submission}', UpdateSubmissionController::class)->middl
 Route::delete('/submission/{submission}', DeleteSubmissionController::class)->middleware(['auth', 'role:patient']);
 
 Route::get('/submission/list/pending', ListPendingSubmissionController::class)->middleware(['auth', 'role:doctor']);
+
+Route::get('/submission/list/all', ListSubmissionController::class)->middleware(['auth']);
+
+Route::get('/submission/prescription/{submission}', [DoSpacesController::class, 'get'])->middleware(['auth']);
