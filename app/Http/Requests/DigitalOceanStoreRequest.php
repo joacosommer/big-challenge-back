@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Submission;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,7 +36,9 @@ class DigitalOceanStoreRequest extends FormRequest
 
     public function submissionIsFromDoctor(Submission $submission): bool
     {
-        return $submission['doctor_id'] == Auth::user()->id;
+        /** @var User $user */
+        $user = Auth::user();
+        return $submission['doctor_id'] == $user->id;
     }
 
     public function submissionIsInProgress(Submission $submission): bool

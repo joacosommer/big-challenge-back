@@ -12,7 +12,7 @@ class CreateSubmissionController extends Controller
     public function __invoke(CreateSubmissionRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $submission = Submission::create([
+        Submission::create([
             'patient_id' => Auth::id(),
             'title' => $data['title'],
             'date_symptoms_start' => $data['date_symptoms_start'],

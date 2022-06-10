@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Submission;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,11 +33,17 @@ class DeleteSubmissionRequest extends FormRequest
 
     private function isPatientSubmission(): bool
     {
-        return $this->submission['patient_id'] == Auth::user()->id;
+        /** @var User $user */
+        $user = Auth::user();
+        /** @var Submission $submission */
+        $submission = $this->route('submission');
+        return $submission->patient_id == $user->id;
     }
 
     private function submissionIsPending(): bool
     {
-        return $this->submission['status'] == Submission::STATUS_PENDING;
+        /** @var Submission $submission */
+        $submission = $this->route('submission');
+        return $submission->status == Submission::STATUS_PENDING;
     }
 }

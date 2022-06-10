@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Submission;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,7 +36,9 @@ class GetPrescriptionFileRequest extends FormRequest
 
     private function submissionIsFromPatient(Submission $submission): bool
     {
-        return $submission['patient_id'] === Auth::user()->id;
+        /** @var User $user */
+        $user = Auth::user();
+        return $submission['patient_id'] === $user->id;
     }
 
     private function submissionIsDone(Submission $submission): bool
@@ -45,6 +48,8 @@ class GetPrescriptionFileRequest extends FormRequest
 
     private function submissionIsFromDoctor(Submission $submission): bool
     {
-        return $submission['doctor_id'] === Auth::user()->id;
+        /** @var User $user */
+        $user = Auth::user();
+        return $submission['doctor_id'] === $user->id;
     }
 }

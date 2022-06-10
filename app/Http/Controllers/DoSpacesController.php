@@ -16,7 +16,7 @@ use Illuminate\Support\Str;
 
 class DoSpacesController extends Controller
 {
-    private $cdnService;
+    private CdnService $cdnService;
 
     public function __construct(CdnService $cdnService)
     {
@@ -25,13 +25,14 @@ class DoSpacesController extends Controller
 
     public function store(DigitalOceanStoreRequest $request, Submission $submission): SubmissionResource
     {
+        /** @var resource $file */
         $file = $request->file('file');
-        $fileName = (string) Str::uuid();
+        $fileName = (string)Str::uuid();
         $folder = config('filesystems.disks.do.folder');
 
         Storage::put(
             "{$folder}/{$fileName}",
-            file_get_contents($file)
+            $file
         );
 
         $submission->update([
@@ -68,13 +69,14 @@ class DoSpacesController extends Controller
 
     public function update(DigitalOceanUpdateRequest $request, Submission $submission): SubmissionResource
     {
+        /** @var resource $file */
         $file = $request->file('file');
         $fileName = $submission['file'];
         $folder = config('filesystems.disks.do.folder');
 
         Storage::put(
             "{$folder}/{$fileName}",
-            file_get_contents($file)
+            $file
         );
         $this->cdnService->purge($fileName);
 

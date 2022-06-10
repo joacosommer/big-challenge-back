@@ -22,16 +22,16 @@ class PrescriptionFileUpdateTest extends TestCase
         Storage::fake();
         Http::fake();
         $file = UploadedFile::fake()->create('test.txt');
-        $fileName = (string) Str::uuid();
+        $fileName = (string)Str::uuid();
         Storage::put(
-            'joaquinsommer/'.$fileName,
-            file_get_contents($file),
+            'joaquinsommer/' . $fileName,
+            $file,
         );
         $submission = Submission::factory()->done()->create([
             'file' => $fileName,
         ]);
         $this->actingAs($submission->doctor);
-        $response = $this->putJson('api/doctor/prescription/'.$submission->id, [
+        $response = $this->putJson('api/doctor/prescription/' . $submission->id, [
             'file' => UploadedFile::fake()->create('prescription.txt'),
         ]);
         $response->assertStatus(200);
@@ -43,16 +43,16 @@ class PrescriptionFileUpdateTest extends TestCase
         Storage::fake();
         Http::fake();
         $file = UploadedFile::fake()->create('test.txt');
-        $fileName = (string) Str::uuid();
+        $fileName = (string)Str::uuid();
         Storage::put(
-            'joaquinsommer/'.$fileName,
+            'joaquinsommer/' . $fileName,
             file_get_contents($file),
         );
         $submission = Submission::factory()->done()->create([
             'file' => $fileName,
         ]);
-        Storage::assertExists('joaquinsommer/'.$fileName);
-        $response = $this->putJson('api/doctor/prescription/'.$submission->id, [
+        Storage::assertExists('joaquinsommer/' . $fileName);
+        $response = $this->putJson('api/doctor/prescription/' . $submission->id, [
             'file' => UploadedFile::fake()->create('prescription.txt'),
         ]);
         $response->assertUnauthorized();
@@ -64,16 +64,16 @@ class PrescriptionFileUpdateTest extends TestCase
         Storage::fake();
         Http::fake();
         $file = UploadedFile::fake()->create('test.txt');
-        $fileName = (string) Str::uuid();
+        $fileName = (string)Str::uuid();
         Storage::put(
-            'joaquinsommer/'.$fileName,
+            'joaquinsommer/' . $fileName,
             file_get_contents($file),
         );
         $submission = Submission::factory()->done()->create([
             'file' => $fileName,
         ]);
         $this->actingAs($submission->doctor);
-        $response = $this->putJson('api/doctor/prescription/'.$submission->id, [
+        $response = $this->putJson('api/doctor/prescription/' . $submission->id, [
             'file' => 'invalid',
         ]);
         $response->assertUnprocessable();
@@ -85,9 +85,9 @@ class PrescriptionFileUpdateTest extends TestCase
         Storage::fake();
         Http::fake();
         $file = UploadedFile::fake()->create('test.txt');
-        $fileName = (string) Str::uuid();
+        $fileName = (string)Str::uuid();
         Storage::put(
-            'joaquinsommer/'.$fileName,
+            'joaquinsommer/' . $fileName,
             file_get_contents($file),
         );
         $submission = Submission::factory()->done()->create([
@@ -95,12 +95,12 @@ class PrescriptionFileUpdateTest extends TestCase
         ]);
         $doctor = User::factory()->doctor()->create();
         $this->actingAs($doctor);
-        Storage::assertExists('joaquinsommer/'.$fileName);
-        $response = $this->putJson('api/doctor/prescription/'.$submission->id, [
+        Storage::assertExists('joaquinsommer/' . $fileName);
+        $response = $this->putJson('api/doctor/prescription/' . $submission->id, [
             'file' => UploadedFile::fake()->create('prescription.txt'),
         ]);
         $response->assertForbidden();
-        Storage::assertExists('joaquinsommer/'.$fileName);
+        Storage::assertExists('joaquinsommer/' . $fileName);
     }
 
     /** @test */
@@ -109,21 +109,21 @@ class PrescriptionFileUpdateTest extends TestCase
         Storage::fake();
         Http::fake();
         $file = UploadedFile::fake()->create('test.txt');
-        $fileName = (string) Str::uuid();
+        $fileName = (string)Str::uuid();
         Storage::put(
-            'joaquinsommer/'.$fileName,
+            'joaquinsommer/' . $fileName,
             file_get_contents($file),
         );
         $submission = Submission::factory()->inProgress()->create([
             'file' => $fileName,
         ]);
         $this->actingAs($submission->doctor);
-        Storage::assertExists('joaquinsommer/'.$fileName);
-        $response = $this->putJson('api/doctor/prescription/'.$submission->id, [
+        Storage::assertExists('joaquinsommer/' . $fileName);
+        $response = $this->putJson('api/doctor/prescription/' . $submission->id, [
             'file' => UploadedFile::fake()->create('prescription.txt'),
         ]);
         $response->assertForbidden();
-        Storage::assertExists('joaquinsommer/'.$fileName);
+        Storage::assertExists('joaquinsommer/' . $fileName);
     }
 
     /** @test */
@@ -132,20 +132,20 @@ class PrescriptionFileUpdateTest extends TestCase
         Storage::fake();
         Http::fake();
         $file = UploadedFile::fake()->create('test.txt');
-        $fileName = (string) Str::uuid();
+        $fileName = (string)Str::uuid();
         Storage::put(
-            'joaquinsommer/'.$fileName,
+            'joaquinsommer/' . $fileName,
             file_get_contents($file),
         );
         $submission = Submission::factory()->done()->create([
             'file' => $fileName,
         ]);
         $this->actingAs($submission->patient);
-        Storage::assertExists('joaquinsommer/'.$fileName);
-        $response = $this->putJson('api/doctor/prescription/'.$submission->id, [
+        Storage::assertExists('joaquinsommer/' . $fileName);
+        $response = $this->putJson('api/doctor/prescription/' . $submission->id, [
             'file' => UploadedFile::fake()->create('prescription.txt'),
         ]);
         $response->assertForbidden();
-        Storage::assertExists('joaquinsommer/'.$fileName);
+        Storage::assertExists('joaquinsommer/' . $fileName);
     }
 }

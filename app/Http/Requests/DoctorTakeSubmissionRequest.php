@@ -14,7 +14,9 @@ class DoctorTakeSubmissionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        /** @mixin Submission */
+        /** @mixin Submission
+         * @var Submission $submission
+         */
         $submission = $this->route('submission');
 
         return $this->submissionIsPending($submission);

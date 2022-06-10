@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Submission;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,14 +31,22 @@ class GetSubmissionRequest extends FormRequest
 
     private function isDoctor(): bool
     {
-        $submissionIsPending = $this->submission['status'] === Submission::STATUS_PENDING;
-        $submissionIsFromDoctor = $this->submission['doctor_id'] === Auth::id();
+        /** @var Submission $submission */
+        $submission = $this->route('submission');
+        /** @var User $user */
+        $user = Auth::user();
+        $submissionIsPending = $submission->status === Submission::STATUS_PENDING;
+        $submissionIsFromDoctor = $submission->doctor_id === $user->id;
 
-        return Auth::user()->hasRole('doctor') && ($submissionIsPending || $submissionIsFromDoctor);
+        return $user->hasRole('doctor') && ($submissionIsPending || $submissionIsFromDoctor);
     }
 
     private function isPatientSubmission(): bool
     {
-        return Auth::user()->hasRole('patient') && $this->submission['patient_id'] == Auth::user()->id;
+        /** @var Submission $submission */
+        $submission = $this->route('submission');
+        /** @var User $user */
+        $user = Auth::user();
+        return $user->hasRole('patient') && $submission->patient_id == $user->id;
     }
 }

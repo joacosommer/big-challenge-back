@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use JetBrains\PhpStorm\ArrayShape;
 
 class CreateSubmissionRequest extends FormRequest
 {
@@ -21,7 +22,7 @@ class CreateSubmissionRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'title' => ['required', 'string', 'max:255'],

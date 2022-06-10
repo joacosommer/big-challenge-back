@@ -30,7 +30,7 @@ class RegisterDoctorRequest extends FormRequest
             'gender' => ['required', 'string'],
             'phone_number' => ['required'],
             'address' => ['required'],
-            'email' => ['required', 'email:strict', 'unique:users,email', 'exists:doctor_invitations,email,token,'.$this->token],
+            'email' => ['required', 'email:strict', 'unique:users,email', 'exists:doctor_invitations,email,token,' . $this->token],
             'password' => ['required', 'string'],
             'specialty' => ['required', 'string'],
             'bank_account_number' => ['required', 'numeric'],

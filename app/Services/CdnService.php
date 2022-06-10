@@ -7,5 +7,5 @@ namespace App\Services;
  */
 interface CdnService
 {
-    public function purge($fileName);
+    public function purge(string $fileName): void;
 }

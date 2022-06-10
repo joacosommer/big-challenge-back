@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class GetDoctorInfoController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): UserResource
     {
         $doctor = Auth::user();
 
