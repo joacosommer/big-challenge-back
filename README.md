@@ -10,6 +10,7 @@ In this project, we have the APIs to manage the submissions and prescriptions by
 * Patients can download the prescription from the server.
 * Patients are free to register and login to the server.
 * Doctors have to be invited by the admin to register and login to the server.
+* PHPStan level 8
 
 ## Getting Started
 
